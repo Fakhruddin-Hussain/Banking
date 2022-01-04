@@ -1,2 +1,132 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+//
+//  main.cpp
+//  Class Bank
+//
+//  Created by Fakhruddin Hussain on 20/12/21.
+//
+
+#include <iostream>
+
+using namespace std;
+class Bank
+{
+private:
+    char name[15];
+    int accno;
+    char acctype;
+    float balance;
+    
+public:
+    void ini_dm();
+    void deposit();
+    void withdraw();
+    void display();
+    int reaccno();
+};
+
+int Bank::reaccno()
+{
+    return accno;
+    
+}
+
+void Bank::ini_dm()
+{
+    cout<<"Enter the name of depositor: ";
+    cin>>name;
+    cout<<"Enter the account number: ";
+    cin>>accno;
+    cout<<"Enter the type of account S for saving and C for current: ";
+    cin>>acctype;
+    toupper(acctype);
+    do
+    {cout<<"Enter the account opening amount minimum balance should be 1000: ";
+    cin>>balance;
+    }
+    while(balance<1000);
+};
+
+void Bank::deposit()
+{
+    float x;
+    cout<<"Enter amount to be deposited";
+    cin>>x;
+    balance=balance+x;
+};
+
+void Bank::withdraw()
+{
+    float x;
+    cout<<"Enter amount to be withdrawn: ";
+    cin>>x;
+    if((balance-x)>=1000)
+        balance=balance-x;
+    else
+    {
+        cout<<"Amount cannot be withdrawn as minimum balance required is 1000 \n";
+        if(balance<1000)
+            cout<<"your balance is "<<balance<<" which is below minimum balance \n";
+        else
+            cout<<"Maximum amount which can be withdrawn is: "<<(balance-1000)<<endl;
+    }
+};
+
+void Bank::display()
+{
+    cout<<"The name of depositor is: "<<name<<'\n'<<"The account number is: "<<accno<<'\n'<<"The tyoe of account is: "<<acctype<<'\n'<<"The account balance is: "<<balance<<'\n';
+};
+
+int main()
+{
+Bank list[3];
+    int tran, tranaccno, i, j, count=0;
+    cout<<"Enter details of all customer \n";
+    for(i=0; i<3; i++)
+    {
+        list[i].ini_dm();
+    }
+    cout<<"Do you want to proceed for a transaction reply with Y/N: ";
+    char check;
+    cin>>check;
+    while(check=='Y'|| check=='y')
+    {
+        cout<<"Enter account number to proceed with transaction: ";
+        cin>>tranaccno;
+        for( j=0;j<3;j++)
+        {
+            if(list[j].reaccno()==tranaccno)
+            {
+                count=j;
+                break;
+            }
+        }
+        if(j>=3)
+            cout<<"Invalid account number \n";
+        else
+        {
+        cout<<"Enter type of transaction \n 1. for deposit \n 2. for withdrawal \n 3. for balance enquiry \n";
+        cin>>tran;
+        switch(tran)
+        {
+                case 1:
+                list[count].deposit();
+                break;
+                case 2:
+                list[count].withdraw();
+                break;
+                case 3:
+                list[count].display();
+                break;
+            default:
+                cout<<"Invalid input please try again: ";
+                }
+        }
+        cout<<"Do you want to do another transaction reply with Y/N: ";
+        cin>>check;
+    }
+    cout<<"Thank you for banking with us"<<endl;
+    return 0;
+}
+
